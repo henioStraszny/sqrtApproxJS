@@ -6,17 +6,16 @@ import (
 )
 
 // MaxIterations Setting up maximum number of iterations withing application
-const MaxIterations int = 99999
+const MaxIterations = 99999
 
-// Sqrt x
+// Sqrt Simple square root with 5 number of iterations
 func Sqrt(number float64) float64 {
-	value := float64(1.0)
+	return SqrtIteration(number, 5)
+}
 
-	for i := 0; i < 5; i++ {
-		value = value - (((value * value) - number) / (2 * (value)))
-	}
-
-	return value
+// Step is a step function
+func Step(value, number float64) float64 {
+	return value - (((value * value) - number) / (2 * (value)))
 }
 
 // SqrtIteration This function is used for counting square root of number
@@ -30,27 +29,34 @@ func SqrtIteration(number float64, iterationNumber int) float64 {
 	}
 
 	for i := 0; i < iterationNumber; i++ {
-		value = value - (((value * value) - number) / (2 * (value)))
+		value = Step(value, number)
 	}
 
 	return value
 }
 
+// SqrtPrecision This function is used for counting square root of number
+// with custome iteration number
+func SqrtPrecision(number, precision float64) (value float64, iterationNumber int) {
+	value = float64(1.0)
+	realValue := math.Sqrt(number)
+
+	for ; iterationNumber < MaxIterations && math.Abs(value-realValue) > precision; iterationNumber++ {
+		value = Step(value, number)
+	}
+
+	return value, iterationNumber
+}
+
 func main() {
 	number := float64(8.0)
+	precision := float64(1 >> 10)
+	result, iterationNumber := SqrtPrecision(number, precision)
 
 	fmt.Println()
 	fmt.Printf("math.Sqrt\t\t: %v\n", math.Sqrt(number))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 47))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 45))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 43))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 40))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 30))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 20))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 10))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 8))
+	fmt.Printf("SqrtIteration result\t: %v, after: %v iterations\n", result, iterationNumber)
 	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 5))
-	fmt.Printf("SqrtIteration\t\t: %v\n", SqrtIteration(number, 3))
 	fmt.Printf("Sqrt\t\t\t: %v\n\n", Sqrt(number))
 	fmt.Println("Pierwszy program Go Jacka")
 	fmt.Printf("Liczba do approxymacji: %v\n", number)
