@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math"
+
+	"golang.org/x/tour/pic"
 )
 
 // MaxIterations Setting up maximum number of iterations withing application
@@ -48,6 +50,34 @@ func SqrtPrecision(number, precision float64) (value float64, iterationNumber in
 	return value, iterationNumber
 }
 
+//Pic function describing picture
+func Pic(dx, dy int) [][]uint8 {
+	picture := make([][]uint8, 256)
+	for i := 0; i < 256; i++ {
+		picture[i] = make([]uint8, 256)
+	}
+
+	for i := 0; i < 256; i++ {
+		for j := 0; j < 256; j++ {
+			picture[i][j] = uint8((i + j) / 2)
+		}
+
+	}
+
+	// picture := [][]uint8{
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// 	[]uint8{1, 10, 100, 255},
+	// }
+
+	return picture
+}
+
 func main() {
 	number := float64(8.0)
 	precision := float64(1 >> 10)
@@ -60,4 +90,5 @@ func main() {
 	fmt.Printf("Sqrt\t\t\t: %v\n\n", Sqrt(number))
 	fmt.Println("Pierwszy program Go Jacka")
 	fmt.Printf("Liczba do approxymacji: %v\n", number)
+	pic.Show(Pic)
 }
